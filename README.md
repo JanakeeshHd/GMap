@@ -1,380 +1,190 @@
-# Google Maps AI 
-### Sync your journey to your beat, powered by Gemini 2.0 Flash AI 🗺️
+# GMap AI - AI Powered Road Trip Planner
 
-An AI-powered Google Maps assistant that helps you plan amazing road trips and explore the world with intelligent route planning, location discovery, and personalized travel recommendations.
+Modern full-stack web app for intelligent road trip planning with a futuristic 3D UI, LLM-backed planning, route optimization, and travel assistance.
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Python Version](https://img.shields.io/badge/python-3.11%2B-blue)](https://www.python.org/downloads/)
-[![Next.js](https://img.shields.io/badge/Next.js-14.0-black)](https://nextjs.org/)
-[![Google ADK](https://img.shields.io/badge/Google%20ADK-Agents-4285F4)](https://github.com/google/agent-development-kit)
-[![Contributions Welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/Yash-Kavaiya/GMap-Buddy/issues)
+## Core Highlights
 
-## 🌟 Overview
+- Premium dark UI with glassmorphism, neon glow, and micro-interactions
+- 3D animated globe and motion-rich interface with Framer Motion + R3F
+- AI chat planner with streaming assistant responses
+- Interactive map dashboard with route overlays and trip telemetry
+- Python FastAPI backend with modular AI/maps/weather services
+- Redis caching and MongoDB persistence for trip plans
 
-Google Maps AI is a powerful tool designed to simplify and enhance Google Maps integration in your applications. Whether you're building location-based services, route optimization systems, or geographic data visualization tools, Google Maps AI provides the essential features you need.
+## Tech Stack
 
-Google Maps AI is an intelligent road trip planning assistant powered by Google's Agent Development Kit (ADK) and the Model Context Protocol (MCP). It combines the power of AI with Google Maps services to create personalized travel experiences, complete with route optimization, weather forecasts, accommodation suggestions, and local recommendations.
+### Frontend
 
-![GMap-Buddy UI](Images/UI.png)
-*Modern and intuitive chat interface for seamless trip planning*
+- Next.js 14 (App Router)
+- React + TypeScript
+- Tailwind CSS
+- Framer Motion
+- Three.js / React Three Fiber / Drei
+- ShadCN-style reusable component patterns
+- react-map-gl (Mapbox or MapLibre rendering)
 
-## 🔗 Links & Resources
+### Backend
 
-### 🏆 Project Showcase
-- **Devpost**: [Celebrating Google Maps](https://devpost.com/software/celebrating-google-maps) - Our project submission showcasing the capabilities and features
+- FastAPI
+- OpenAI API integration layer
+- Google Maps integration layer
+- Weather API integration layer
+- Redis (cache)
+- MongoDB (storage)
 
-### 👥 Contributors & Team
-- **Yash Kavaiya**: [GitHub](https://github.com/Yash-Kavaiya) | [LinkedIn](https://www.linkedin.com/in/yashkavaiya/)
-- **Vinod Kumar Konkal**: [LinkedIn](https://www.linkedin.com/in/vinod-kumar-konkal/) | [GitHub](https://github.com/Wiikay)
+## Implemented Pages
 
-## ✨ Features
+- `/` - Landing page with 3D globe, animated gradient background, hero CTA
+- `/chat` - AI chat planner with streaming responses and voice input support
+- `/map` - Map dashboard with route visualization and live indicators
+- `/dashboard` - Smart planner dashboard with timeline + budget tracking
+- `/trip-details` - Day-wise itinerary timeline (places, stay, food, weather)
+- `/profile` - Saved trips + personalized preference dashboard
 
-### 🤖 AI-Powered Trip Planning
-- **Intelligent Route Optimization** - AI analyzes your preferences to create the perfect itinerary
-- **Conversational Interface** - Natural language interaction for easy trip planning
-- **Personalized Recommendations** - Tailored suggestions based on your interests and budget
-- **Multi-Day Trip Support** - Break down long journeys with strategic stopping points
+## Backend APIs
 
-### 🗺️ Advanced Mapping Capabilities
-- **Real-time Directions** - Get up-to-date routing with traffic considerations
-- **Location Discovery** - Find attractions, restaurants, and points of interest
-- **Place Details & Reviews** - Comprehensive information about destinations
-- **Custom Waypoints** - Add multiple stops to your journey
+### `POST /plan-trip`
 
-### 🌤️ Smart Travel Assistance
-- **Weather Forecasts** - Get weather information for your entire route
-- **Clothing Recommendations** - AI suggests appropriate attire for each destination
-- **Pet-Friendly Options** - Special accommodations for travelers with pets
-- **Budget-Conscious Planning** - Options for every budget level
+Input:
 
-### 🏗️ Technical Features
-- **Google ADK Integration** - Built on Google's Agent Development Kit
-- **Model Context Protocol (MCP)** - Seamless tool integration and extensibility
-- **Next.js Frontend** - Modern, responsive web interface
-- **FastAPI Backend** - High-performance Python API
-- **Docker Support** - Containerized deployment ready
-- **Cloud Run Compatible** - Easy deployment to Google Cloud
-
-![MCP Map Tools](Images/mcp_map_tools.png)
-*Model Context Protocol (MCP) integration showing available map tools and capabilities*
-
-## 🚀 Getting Started
-
-### Prerequisites
-
-- **Python 3.11+** - For the backend API and AI agent
-- **Node.js 18+** - For the Next.js frontend
-- **Google Maps API Key** - [Get one here](https://developers.google.com/maps/documentation/javascript/get-api-key)
-- **Docker** (optional) - For containerized deployment
-- **Google Cloud CLI** (optional) - For Cloud Run deployment
-
-### Quick Start
-
-1. **Clone the repository:**
-```bash
-git clone https://github.com/Yash-Kavaiya/GMap-Buddy.git
-cd GMap-Buddy
+```json
+{
+  "source": "Bangalore",
+  "destination": "Goa",
+  "days": 3,
+  "preferences": {
+    "budget": "medium",
+    "interests": ["beaches", "food"],
+    "transport": "car"
+  }
+}
 ```
 
-2. **Set up environment variables:**
-```bash
-# Create and configure your environment
-export GOOGLE_MAPS_API_KEY="your_api_key_here"
+Output:
+
+```json
+{
+  "summary": "3-day scenic road trip from Bangalore to Goa.",
+  "estimated_budget": 18000,
+  "itinerary": [
+    {
+      "day": 1,
+      "title": "Day 1 journey leg",
+      "activities": ["..."],
+      "stay": "Top-rated nearby hotel"
+    }
+  ]
+}
 ```
 
-3. **Choose your deployment method:**
+### `POST /optimize-route`
+- Returns best route summary with stops.
 
-#### Option A: Docker (Recommended)
-```bash
-# Clone and setup
-git clone https://github.com/Yash-Kavaiya/Google-Map-AI.git
-cd Google-Map-AI
+### `POST /recommend-places`
+- Returns AI-aware place recommendations by interests and budget.
 
-# Copy environment template
-cp .env.example .env
-# Edit .env file and add your GOOGLE_MAPS_API_KEY
+### `GET /weather?source=...&destination=...`
+- Returns route weather forecast.
 
-# Build and run with Docker
-docker build -t google-maps-ai .
-docker run -d \
-  -p 8080:8080 \
-  -e GOOGLE_MAPS_API_KEY="your_api_key_here" \
-  --name google-maps-ai \
-  google-maps-ai
+### `POST /chat`
+- Conversational AI endpoint.
+- Supports streamed plain-text response chunks.
+
+## Folder Structure
+
+```text
+.
+├─ frontend/
+│  ├─ app/
+│  ├─ components/
+│  ├─ lib/
+│  ├─ package.json
+│  └─ .env.example
+├─ backend/
+│  ├─ app/main.py
+│  ├─ app/api/routes.py
+│  ├─ app/core/config.py
+│  ├─ app/models/schemas.py
+│  ├─ app/services/cache_service.py
+│  ├─ app/services/db_service.py
+│  ├─ app/services/llm_service.py
+│  ├─ app/services/maps_service.py
+│  ├─ app/services/weather_service.py
+│  ├─ requirements.txt
+│  └─ .env.example
+└─ ai/
+   ├─ prompts/system_trip_planner.md
+   ├─ pipelines/itinerary_pipeline.py
+   └─ README.md
 ```
 
-#### Option B: Docker Compose (Development)
+## Local Setup
+
+## 1) Frontend
+
 ```bash
-# Setup environment
-cp .env.example .env
-# Edit .env and add your API key
-
-# Run with docker-compose
-docker-compose up -d
-
-# For development with live reload
-docker-compose --profile dev up
+cd frontend
+npm install
+cp .env.example .env.local
+npm run dev
 ```
 
-#### Option C: Local Development
+Frontend runs on: `http://localhost:3000`
+
+Required frontend env:
+
+- `NEXT_PUBLIC_API_BASE_URL` (default: `http://localhost:8000`)
+- `NEXT_PUBLIC_MAPBOX_TOKEN` (optional; if missing, app uses MapLibre + public dark style)
+
+## 2) Backend
+
 ```bash
-# Backend (ADK Agent)
+cd backend
+python -m venv .venv
+# Windows PowerShell:
+.venv\Scripts\Activate.ps1
 pip install -r requirements.txt
-export GOOGLE_MAPS_API_KEY="your_api_key_here"
-adk web
-
-# Frontend (in separate terminal)
-cd adk-ui
-npm install
-npm run dev
+cp .env.example .env
+uvicorn app.main:app --reload --port 8000
 ```
 
-Your Google Maps AI will be available at `http://localhost:8080`
+Backend runs on: `http://localhost:8000`
 
+Required backend env:
 
-GMap-Buddy provides a conversational interface where you can naturally describe your travel needs:
+- `OPENAI_API_KEY`
+- `OPENAI_MODEL` (default: `gpt-4o-mini`)
+- `OPENAI_BASE_URL` (optional; for OpenAI-compatible providers)
+- `GOOGLE_MAPS_API_KEY`
+- `WEATHER_API_KEY`
 
-```
-👋 Hi! I'm your road trip planning assistant. Where would you like to start your journey?
+## 3) Infra (Redis + MongoDB)
 
-User: I want to plan a 3-day road trip from San Francisco to Los Angeles via Big Sur
+You can run these locally or via Docker:
 
-🗺️ Great choice! That's one of the most scenic routes on the West Coast. Let me help you plan this amazing trip...
-```
+- Redis on `localhost:6379`
+- MongoDB on `localhost:27017`
 
-### Conversation Flow
-
-The AI assistant follows a structured approach:
-
-1. **Starting Point** - Where your journey begins
-2. **Destination** - Where you're heading (with scenic route options)
-3. **Duration** - How many days you have available
-4. **Preferences** - Travel style, budget, interests, pets, dietary needs
-5. **Custom Itinerary** - Personalized recommendations with weather and packing advice
-
-
-## 🛠️ Configuration
-
-### Environment Variables
+## Frontend Quality Commands
 
 ```bash
-# Required
-GOOGLE_MAPS_API_KEY=your_api_key_here
-
-# Optional
-PORT=8080                    # Server port (default: 8080)
-GOOGLE_ADK_MODEL=gemini-2.0-flash  # AI model to use
+cd frontend
+npm run lint
+npm run build
 ```
 
-### Google Maps API Setup
+## Production Notes
 
-1. Go to the [Google Cloud Console](https://console.cloud.google.com/)
-2. Create a new project or select an existing one
-3. Enable the following APIs:
-   - Maps JavaScript API
-   - Places API
-   - Directions API
-   - Geocoding API
-4. Create credentials (API Key)
-5. Restrict the API key to your domain/IP for security
+- Replace fallback/mock service responses with real provider mappings.
+- Add auth/session layer before multi-user deployment.
+- Add PostgreSQL adapter if strict relational storage is needed.
+- Use background workers for heavy itinerary generation tasks.
 
-![Technical Architecture](Images/Tech-Diagram.png)
-*Technical architecture showing the integration between Google ADK, MCP tools, and Maps APIs*
+## Design Direction
 
-## 📁 Project Structure
+Visual style combines:
 
-![Data Pipeline](Images/DataPipelineDiagram.png)
-*Data flow diagram showing how user inputs are processed through the AI agent and MCP tools*
-
-```
-Google-Map-AI/
-├── 📁 google-map-adk/       # Python ADK agent
-│   ├── agent.py            # Google ADK AI agent configuration
-│   ├── prompt.py           # AI prompts and conversation flow
-│   └── __init__.py
-├── 📁 adk-ui/              # Next.js frontend
-│   ├── app/                # Next.js 14 app directory
-│   │   ├── layout.tsx      # Root layout
-│   │   ├── page.tsx        # Homepage
-│   │   ├── globals.css     # Global styles
-│   │   └── api/            # API routes
-│   │       └── adk/        # ADK integration endpoints
-│   ├── components/         # React components
-│   │   ├── chat/           # Chat interface components
-│   │   ├── session/        # Session management
-│   │   ├── sidebar/        # Navigation sidebar
-│   │   ├── ui/             # UI components (buttons, inputs, etc.)
-│   │   └── voice/          # Voice controls
-│   ├── lib/                # Utility libraries
-│   │   ├── adk-service.ts  # ADK service integration
-│   │   └── utils.ts        # Helper functions
-│   └── types/              # TypeScript definitions
-├── 📁 Images/              # Documentation images
-│   ├── UI.png             # User interface screenshot
-│   ├── Tech-Diagram.png   # Technical architecture
-│   ├── DataPipelineDiagram.png  # Data flow diagram
-│   ├── SequenceDiagram.png     # Sequence diagram
-│   └── mcp_map_tools.png       # MCP tools overview
-├── 📄 Dockerfile          # Multi-stage container configuration
-├── 📄 docker-compose.yml  # Docker Compose for development
-├── 📄 docker-entrypoint.sh # Container startup script
-├── 📄 .env.example        # Environment variables template
-├── 📄 requirements.txt    # Python dependencies
-├── 📄 README.md          # This file
-└── 📄 .gitignore         # Git ignore rules
-```
-
-![Sequence Diagram](Images/SequenceDiagram.png)
-*Sequence diagram illustrating the interaction flow between user, frontend, backend, and Google Maps APIs*
-
-## 🧪 Development & Testing
-
-### Local Development
-
-```bash
-# Backend development
-cd gmap-buddy
-python -m pip install -r ../requirements.txt
-python main.py
-
-# Frontend development (separate terminal)
-cd adk-ui
-npm install
-npm run dev
-```
-
-### Building the Frontend
-
-```bash
-cd adk-ui
-npm run build    # Creates optimized production build
-npm run start    # Serves the production build
-```
-
-### Testing API Endpoints
-
-```bash
-# Test health endpoint
-curl http://localhost:8080/health
-
-# Test chat functionality
-curl -X POST http://localhost:8080/api/chat \
-  -H "Content-Type: application/json" \
-  -d '{
-    "message": "I want to plan a weekend trip from New York to Boston"
-  }'
-```
-
-### Docker Development
-
-```bash
-# Build development image
-docker build -t gmap-buddy:dev .
-
-# Run with volume mounting for development
-docker run -d \
-  -p 8080:8080 \
-  -e GOOGLE_MAPS_API_KEY="your_api_key" \
-  -v $(pwd):/app \
-  gmap-buddy:dev
-```
-
-## 🔧 Architecture & Technology Stack
-
-### Core Technologies
-
-- **🤖 Google ADK (Agent Development Kit)** - AI agent framework
-- **🗺️ Model Context Protocol (MCP)** - Tool integration protocol
-- **⚡ FastAPI** - High-performance Python web framework
-- **⚛️ Next.js 14** - React framework with App Router
-- **🎨 Tailwind CSS** - Utility-first CSS framework
-- **� Docker** - Containerization platform
-- **☁️ Google Cloud Run** - Serverless container platform
-
-### Key Components
-
-1. **AI Agent (`agent.py`)**
-   - Powered by Gemini 2.0 Flash model
-   - Integrates MCP tools for Maps functionality
-   - Handles conversational flow and context management
-
-2. **FastAPI Backend (`main.py`)**
-   - RESTful API endpoints
-   - Health checks for deployment
-   - Static file serving for frontend
-
-3. **Next.js Frontend (`adk-ui/`)**
-   - Modern React application
-   - Real-time chat interface
-   - Responsive design with Tailwind CSS
-
-4. **MCP Integration**
-   - Google Maps server via npm package
-   - Seamless tool calling from AI agent
-   - Extensible architecture for additional tools
-
-### Data Flow
-
-```
-User Input → Next.js UI → FastAPI → Google ADK Agent → MCP Tools → Google Maps API → Response
-```
-
-## 🤝 Contributing
-
-We welcome contributions to make GMap-Buddy even better! Here's how you can help:
-
-### Ways to Contribute
-
-- 🐛 **Bug Reports** - Found an issue? Let us know!
-- 💡 **Feature Requests** - Have ideas for new features?
-- 📖 **Documentation** - Help improve our docs
-- 🔧 **Code Contributions** - Submit pull requests
-- 🧪 **Testing** - Help us test on different platforms
-
-### Development Process
-
-1. **Fork the repository**
-2. **Create a feature branch**
-   ```bash
-   git checkout -b feature/amazing-feature
-   ```
-3. **Make your changes**
-   - Follow the existing code style
-   - Add tests if applicable
-   - Update documentation
-4. **Test your changes**
-   ```bash
-   # Test backend
-   python -m gmap_buddy.main
-   
-   # Test frontend
-   cd adk-ui && npm run build
-   ```
-5. **Submit a pull request**
-
-### Code Style
-
-- **Python**: Follow PEP 8 guidelines
-- **TypeScript/React**: Use ESLint and Prettier
-- **Commit Messages**: Use conventional commits format
-
-### Getting Help
-
-- 📫 **Issues**: [GitHub Issues](https://github.com/Yash-Kavaiya/GMap-Buddy/issues)
-- 💬 **Discussions**: [GitHub Discussions](https://github.com/Yash-Kavaiya/GMap-Buddy/discussions)
-
-### Performance Tips
-
-- **API Optimization**: The MCP integration handles caching automatically
-- **Rate Limiting**: Google Maps APIs have rate limits - the agent respects these
-- **Memory Usage**: The Docker container is optimized for memory efficiency
-- **Scaling**: Use Cloud Run for automatic scaling based on traffic
-
-### 🆘 Get Help
-- 📋 **Issues**: [Report bugs or request features](https://github.com/Yash-Kavaiya/GMap-Buddy/issues)
-- 💬 **Discussions**: [Community discussions](https://github.com/Yash-Kavaiya/GMap-Buddy/discussions)
-- 📖 **Documentation**: [Wiki & Guides](https://github.com/Yash-Kavaiya/GMap-Buddy/wiki)
-
-
-
-
+- Apple-level polish
+- Tesla dashboard UI cues
+- Google Maps intelligence patterns
+- Futuristic AI assistant interaction design
